@@ -1,10 +1,29 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
 const Home = () => {
+  const [articles, setArticles] = useState([]);
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        const response = await fetch("/api/articles");
+        if (response.ok) {
+          const data = await response.json();
+          setArticles(data);
+        } else {
+          console.error("Failed to fetch articles");
+        }
+      } catch (error) {
+        console.error("An error occurred while fetching articles:", error);
+      }
+    };
+
+    fetchArticles();
+  }, []);
   return (
     <div className="min-h-screen flex flex-col">
       {/* Navigation Bar */}
@@ -35,13 +54,13 @@ const Home = () => {
       <section className="container mx-auto px-4 py-8">
         <h2 className="text-3xl font-bold text-gray-800 mb-6">Latest News</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Example News Article */}
-          <div className="bg-white shadow-md rounded-lg p-4">
-            <h3 className="text-xl font-bold text-gray-800 mb-2">Article Title</h3>
-            <p className="text-gray-600 mb-4">Short description of the news article. This is a brief summary to entice readers to click and read more.</p>
-            <Link href="/news/article" className="text-blue-600 hover:underline">Read More</Link>
-          </div>
-          {/* Repeat the above block for more articles */}
+          {articles.map((article, index) => (
+            <div key={index} className="bg-white shadow-md rounded-lg p-4">
+              <h3 className="text-xl font-bold text-gray-800 mb-2">{article.title}</h3>
+              <p className="text-gray-600 mb-4">{article.content.substring(0, 100)}...</p>
+              <Link href={`/news/article/${index}`} className="text-blue-600 hover:underline">Read More</Link>
+            </div>
+          ))}
         </div>
       </section>
 
