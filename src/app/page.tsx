@@ -16,6 +16,7 @@ const Home = () => {
             <Link href="/news" className="text-gray-600 hover:text-gray-800">News</Link>
             <Link href="/about" className="text-gray-600 hover:text-gray-800">About</Link>
             <Link href="/contact" className="text-gray-600 hover:text-gray-800">Contact</Link>
+            <Link href="/create-article" className="text-gray-600 hover:text-gray-800">Create Article</Link>
           </div>
         </div>
       </nav>
